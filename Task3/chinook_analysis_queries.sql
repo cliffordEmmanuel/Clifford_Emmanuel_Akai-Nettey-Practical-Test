@@ -82,7 +82,7 @@ $$ LANGUAGE plpgsql;
 
 
 /* Run the report for several total sales amount */
-SELECT * FROM get_employee_sales_report(0); 
+SELECT * FROM get_employee_sales_report(500); 
 SELECT * FROM get_employee_sales_report(800);
 
 
