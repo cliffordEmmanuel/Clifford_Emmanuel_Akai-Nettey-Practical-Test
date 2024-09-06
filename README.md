@@ -28,8 +28,7 @@ visualizations.
 
 ## Question 2: Sales Data Transformation and Aggregation
 
-Task: Transform and aggregate a large sales dataset (Retail Sales Data) and analyze
-sales trends using PySpark.
+Task: Transform and aggregate a large sales dataset [Retail Sales Data](https://www.kaggle.com/datasets/carrie1/ecommerce-data) and analyze sales trends using PySpark.
 
 1. Load the dataset into a PySpark DataFrame.
 2. Perform necessary data cleaning (e.g., handle missing values, correct data
@@ -46,7 +45,7 @@ types).
 
 ## Question 3: Complex SQL Queries for Data Exploration
 
-### Task: Using the Chinook Database, perform the following SQL operations:
+### Task: Using the [Chinook Database](), perform the following SQL operations:
 
 1. Load the database and create the necessary tables in an SQLite or PostgreSQL
 database setup.
