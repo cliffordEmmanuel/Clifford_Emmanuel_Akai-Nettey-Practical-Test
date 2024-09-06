@@ -2,10 +2,11 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, sum,to_timestamp, count,date_trunc, round,desc
 from pyspark.sql.types import DecimalType
 
+
 # Create a Spark session
 spark = SparkSession.builder \
     .appName("EcommerceDataAnalysis") \
-    .config("spark.jars", "jars/postgresql-42.5.6.jar") \
+    .config("spark.jars", "Task2/jars/postgresql-42.5.6.jar") \
     .getOrCreate()
 
 # Set the legacy time parser policy
@@ -16,7 +17,7 @@ spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
 data = spark.read.format("csv") \
     .option("header", "true") \
     .option("inferSchema", "true") \
-    .load("data/data.csv")
+    .load("Task2/data/data.csv")
 
 
 # inspect the schema
@@ -65,8 +66,8 @@ product_sales = data.groupBy("StockCode", "Description") \
 print("\nTop 10 Products with Highest Sales:")
 product_sales.show(truncate=False)
 
-# TODO: hide connection details inside an environment variable
-# Database connection properties
+
+# Database connection details
 db_properties = {
     "driver": "org.postgresql.Driver",  
     "url": "jdbc:postgresql://localhost:5432/wb_test", 
