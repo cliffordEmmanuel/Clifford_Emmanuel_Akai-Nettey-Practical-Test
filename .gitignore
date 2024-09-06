@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+.env
+
+# Notebook Checkpoints
+.ipynb_checkpoints/
+
+# excluding all the ipynb files
+*.ipynb
+
+# ignoring all data files
+raw_data/
