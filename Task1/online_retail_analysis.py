@@ -15,7 +15,6 @@ from query import queries as query
 # Suppress pandas warning messages
 warnings.simplefilter(action='ignore')
 
-# utility functions
 
 def create_database(db_name:str) -> None:
     """Utility function to create database given a specific name
@@ -31,7 +30,6 @@ def create_database(db_name:str) -> None:
     if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', db_name):
         raise ValueError("Invalid database name")
 
-    #TODO: connection details
     engine = create_engine("postgresql://postgres:postgres@localhost:5432/postgres", isolation_level='AUTOCOMMIT')
     
     # PostgreSQL DDL statement doesn't support parameter binding so doing a controlled string interpolation 
@@ -109,6 +107,7 @@ def ingest_to_table(data: pd.DataFrame, table_name: str, engine: Engine) -> None
         table_name (str): Table name in which to store data.
         engine (Engine): An SQLAlchemy Engine object
     """
+    
     data.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
     
 

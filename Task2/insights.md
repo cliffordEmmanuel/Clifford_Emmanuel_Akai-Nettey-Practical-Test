@@ -11,7 +11,6 @@
     Decorative items (Cakestands, Hanging Hearts, Bunting) dominate the list, suggesting a strong demand for home decor.
     Seasonal products (Christmas decorations, Picnic Basket) also have a significant presence.
 
-
 - Weekend Trends:
 
     Saturday has zero sales, likely due to store closures or reduced operating hours.
