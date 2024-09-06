@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import warnings
 
+from ucimlrepo import fetch_ucirepo 
+
 from query import queries as query
 
 # Suppress pandas warning messages
@@ -69,33 +71,44 @@ def setup_db(db_name: str) -> Engine:
     
     return create_engine(f"postgresql://postgres:postgres@localhost:5432/{db_name}")
 
+def fetch_dataset() -> pd.DataFrame:
+    """Fetches retail data from UCI online repository
 
-def ingest_to_table(data_path: str, table_name: str, engine: Engine) -> None:
-    """Read data from an excel file and dump to a database table.
-
-    Args:
-        data_path (str): Path to excel file
-        table_name (str): Table name in which to store data.
-        engine (Engine): An SQLAlchemy Engine object
+    Returns:
+        pd.DataFrame: Dataframe containing retail data.
     """
 
-    data = pd.read_excel(data_path)
+    print("Fetching dataset from UCI online repository...")
+    online_retail = fetch_ucirepo(id=352) 
+    data = online_retail['data']['original']
 
     print(f"Dataframe shape: {data.shape}")
 
-    # basic cleaning...
+    # observing some nulls
     print("##########################")
     print("Checking for nulls")
     for index, entry in enumerate(data.isna().sum()):
         print(f"Column: {data.columns[index]}, null count: {entry}")
     
     data.dropna(subset=['CustomerID'], inplace=True)
-
     print(f"Dataframe shape after missing values drop: {data.shape}")
+
+    data['InvoiceDate'] = pd.to_datetime(data['InvoiceDate'])
     
     data.columns = data.columns.str.lower() # postgresql is case sensitive
 
-    # save to database table
+    return data
+
+
+
+def ingest_to_table(data: pd.DataFrame, table_name: str, engine: Engine) -> None:
+    """Dumps data from a dataframe to database table
+
+    Args:
+        data_path (str): Path to excel file
+        table_name (str): Table name in which to store data.
+        engine (Engine): An SQLAlchemy Engine object
+    """
     data.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
     
 
@@ -222,15 +235,16 @@ if __name__ == "__main__":
     DB_NAME="wb_test"
     TABLE_NAME="online_retail"
 
-    raw_data_path = "Task1/raw_data"
     images_path = "Task1/images"
 
     engine = setup_db(DB_NAME)
 
-    print("Ingesting data to database")
-    ingest_to_table(f'{raw_data_path}/Online Retail.xlsx',TABLE_NAME, engine)
-    print('\n')
+    online_retail_data = fetch_dataset()
 
+    print('\n')
+    print("Ingesting data to database")
+    ingest_to_table(online_retail_data,TABLE_NAME, engine)
+    
     print("#"*30)
     print("Analyzing top 10 customers...")
     top_10_customers = run_query(query['top_10'], engine)
